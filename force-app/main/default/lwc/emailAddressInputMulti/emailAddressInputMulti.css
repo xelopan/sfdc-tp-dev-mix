@@ -1,0 +1,8 @@
+.eam-input {
+    display: inline-block;
+}
+
+div[data-id="listbox-id-1"] {
+    width: 100%;
+    max-width: none;
+}

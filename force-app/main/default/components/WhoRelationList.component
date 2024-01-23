@@ -1,0 +1,6 @@
+<apex:component controller="NotifyActivityCtrl" access="global">
+    <apex:attribute name="recordId" assignTo="{!activityId}" type="String" description="id of merged activity record"/>
+    <apex:repeat value="{!participantNames}" var="participantName">
+        <span>{!participantName}{!IF(indexMap[participantName] == lastIndex, '', ', ')}</span>
+    </apex:repeat>
+</apex:component>

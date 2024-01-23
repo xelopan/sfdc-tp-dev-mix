@@ -1,0 +1,4 @@
+<!-- AttachmentUploaderEvent -->
+<aura:event type="COMPONENT" description="Event template">
+    <aura:attribute name="Uploaded" type="String"/>
+</aura:event>

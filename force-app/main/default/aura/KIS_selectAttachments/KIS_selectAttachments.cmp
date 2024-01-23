@@ -1,0 +1,86 @@
+<!-- selectAttachments -->
+<aura:component controller="KIS_ContactAttachment" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="isOpen" type="boolean"/>
+    <aura:attribute name="fileIds" type="Object[]"/>
+    <aura:attribute name="sNo" type="Integer" default="1"/>
+    <aura:attribute name="isChecked" type="Boolean" default="false"/>
+    <aura:attribute name="box" type="object[]"/>
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:KIS_DeleteAttachmentsEvent" action="{!c.handleDeleteEvent}"/>
+    
+    <aura:registerEvent name="deleteRow" type="c:KIS_DeleteRowEvent"/>
+    <aura:registerEvent name="DeleteNotifyComponentEvent" type="c:KIS_DeleteNotifyComponentEvent"/>
+    <aura:handler name="deleteRow" event="c:KIS_DeleteRowEvent" action="{!c.deleteRow}"/>
+
+    <aura:handler name="updateAttachmentsAppEvent" event="c:KIS_UpdateAttachmentsAppEvent" action="{!c.handleUpload}"/>
+    
+    <aura:registerEvent name="selectedAttachmentsNotifyEvent" type="c:KIS_selectedAttachmentsNotifyEvent"/>
+    <!--aura:method name="childmethod" action="{!c.handleDeleteEvent}"> 
+        <aura:attribute name="fileIds" type="Object"/> 
+    </aura:method-->
+    
+    <aura:if isTrue="{!v.isOpen}">
+        <div class="demo-only" style="height: 200px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <div class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                            <lightning:buttonIcon iconName="utility:close" 
+                                                  onclick="{! c.closeModal }" 
+                                                  variant="bare-inverse"
+                                                  alternativeText="close" />
+                        </div>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Attachments</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="slds-text-title_caps" scope="col">
+                                        <div class="slds-truncate" title="Selected">Selected</div>
+                                    </th>
+                                    <th class="slds-text-title_caps" scope="col">
+                                        <div class="slds-truncate" title="S.No">S.No</div>
+                                    </th>
+                                    <th class="slds-text-title_caps" scope="col">
+                                        <div class="slds-truncate" title="Attachment Name">Attachment Name</div>
+                                    </th>
+                                    <th class="slds-text-title_caps" scope="col">
+                                        <div class="slds-truncate" title="Delete">Delete</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.fileIds}" var="f"  indexVar="i">
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Selected">
+                                            	<lightning:input type="checkbox" label="" value="{!f}" checked="false" onchange="{!c.onChan}"/>
+                                            </div>
+                                        </th>
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Cloudhub">{!v.sNo + i}</div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate" title="Attachment Title"><lightning:formattedText value="{!f.Title}"/></div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="slds-truncate" title="DeleteIcon"><lightning:buttonIcon iconName="utility:delete" value="{!f.ContentDocumentId}" size="large" variant="bare" onclick="{!c.deleteFile }" alternativeText="delete" /></div>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>  
+                            </tbody>
+                        </table>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button label="Ok" onclick="{!c.onOk}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </aura:if>
+    
+    <!--lightning:button label="Delete files" onclick="{!c.openModal}"/-->
+</aura:component>

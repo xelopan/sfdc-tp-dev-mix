@@ -1,0 +1,56 @@
+<template>
+    <div class="slds-form-element">
+        <!-- <label class="slds-form-element__label" for={inputId}>{label}</label> -->
+        <div class="slds-form-element__control">
+            <div class="slds-combobox_container slds-has-selection">
+                <div data-id="toOpen" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                    <div class=" slds-input-has-icon slds-input-has-icon_right" role="none">
+                        <div>
+                            <div id="input" class="slds-p-top_none">
+                                <lightning-input id={inputId} data-id={inputId} class="slds-p-top_none" label={label}
+                                        placeholder={inputPlaceholder} type="text"
+                                        onkeyup={handleInputKeyUp} onblur={handleInputBlur} onfocus={handleInputFocus}></lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- DROPDOWN -->
+                    <div data-id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7" role="listbox">
+                        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                            <template for:each={matchedItems} for:item="item">
+                                <!-- Matched Item markup START -->
+                                <li key={item.Id} data-id={item.Id} role="presentation" class="slds-listbox__item" onclick={handleMatchItemSelect}>
+                                    <div class="slds-media slds-listbox__option slds-listbox__option_entity slds-media_center" role="option">
+                                        <span class="slds-media__figure slds-listbox__option-icon">
+                                            <span class="slds-icon_container slds-icon-standard-account">
+                                                <div class="slds-icon slds-icon_small" aria-hidden="true">
+                                                    <lightning-icon icon-name={item.icon} alternative-text={item.altText} size="small"></lightning-icon>
+                                                </div>
+                                            </span>
+                                        </span>
+                                        <span class="slds-media__body">
+                                            <span class="slds-listbox">
+                                                {item.Name}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </li>
+                                <!-- Matched Item markup END-->
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <template if:true={arePillsShown}>
+                <lightning-pill-container items={pillItems} onitemremove={handlePillRemove} tabindex="-1"> </lightning-pill-container>
+            </template>
+
+            <!-- <lightning-input value={searchTerm} id={inputId} onkeyup={handleInputKeyUp} class="eam-input"></lightning-input> -->
+            <!-- <div class="slds-pill_container slds-scrollable_none"> -->
+            <!-- <lightning-pill-container items={pillItems} onitemremove={handlePillRemove}
+                    class="slds-scrollable_none" tabindex="-1"> </lightning-pill-container> -->
+            <!-- </div> -->
+        </div>
+    </div>
+
+</template>

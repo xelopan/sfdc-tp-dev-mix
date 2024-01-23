@@ -1,0 +1,52 @@
+<template>
+    <div class="slds-form-element__control">
+        <div class="slds-form-element" data-id="selectFolder">
+            <label class="slds-form-element__label" for="selectFolder">Select Folder</label>
+            <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                    <select class="slds-select" id="selectFolder"
+                        onchange={handleEmailFolderSelect}>
+                        <option value="">Select Folder</option>
+                        <template for:each={emailTemplateFolders} for:item="emailFolder">
+                            <option key={emailFolder.folderId} value={emailFolder.folderId}>{emailFolder.folderName}</option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slds-form-element__control">
+        <div class="slds-form-element" data-id="selectTemplate">
+            <label class="slds-form-element__label" for="selectTemplate">Select Template</label>
+            <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                    <select class="slds-select" id="selectTemplate"
+                        onchange={handleEmailTemplateSelect}>
+                        <option value="">Select Template</option>
+                        <template for:each={emailTemplates} for:item="emailTemplate">
+                            <option key={emailTemplate.emailTemplateId} value={emailTemplate.emailTemplateId}>{emailTemplate.emailTemplateName}</option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="templateListbox" class="slds-dropdown slds-dropdown_length-with-icon-7" role="listbox">
+        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+            <template for:each={emailTemplates} for:item="emailTemplate"> -->
+                <!-- Email Template Item markup START -->
+                <!-- <li key={emailTemplate.emailTemplateId} data-id={emailTemplate.emailTemplateId} role="presentation" class="slds-listbox__item" onclick={handleEmailTemplateSelect}>
+                    <div class="slds-media slds-listbox__option slds-listbox__option_entity slds-media_center" role="option">
+                        <span class="slds-media__body">
+                            <span class="slds-listbox">
+                                {emailTemplate.emailTemplatename}
+                            </span>
+                        </span>
+                    </div>
+                </li> -->
+                <!-- Email Template Item markup END-->
+            <!-- </template>
+        </ul>
+    </div> -->
+</template>

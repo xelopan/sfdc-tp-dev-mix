@@ -1,0 +1,48 @@
+<template>
+    <!-- sldsValidatorIgnoreNextLine -->
+    <lightning-quick-action-panel header="Select Files">
+        <div slot="footer">
+            <div class="slds-float_right">
+                <lightning-button label="Cancel" onclick={handleCancelkButtonClicked}></lightning-button>
+                <lightning-button label="Add" variant="brand" class="slds-m-left_small" disabled={isAddButtonDisabled} onclick={handleAddButtonClicked}></lightning-button>
+            </div>
+        </div>
+        <div class="slds-grid">
+            <div class="slds-col slds-size_1-of-3 slds-border_right">
+                <div class="slds-m-bottom_medium slds-p-around_medium">
+                    <lightning-file-upload name="attachmentUploader" label="Upload a file" onuploadfinished={handleUploadFinished} multiple></lightning-file-upload>
+                </div>
+                <lightning-vertical-navigation selected-item={selectedFilter} onselect={handleNavSelect} class="navigation">
+                    <lightning-vertical-navigation-item label="My Files" name="my_files"></lightning-vertical-navigation-item>
+                    <lightning-vertical-navigation-item label="Record Related Files" name="related_files"></lightning-vertical-navigation-item>
+                </lightning-vertical-navigation>
+            </div>
+            <div class="slds-col slds-size_2-of-3 slds-p-around_medium">
+                <template if:true={isFileListShown}>
+                    <ul>
+                        <template for:each={files} for:item="file">
+                            <li key={file.contentId} class="list-item" onclick={handleItemClick} data-content-id={file.contentId}>
+                            <!-- <li key={file.contentId} class="list-item"> -->
+                                <lightning-layout vertical-align="center">
+                                    <lightning-layout-item>
+                                        <!-- <lightning-input type="checkbox" name={file.contentId} checked={file.isChecked} class="checkboxContainer" onclick={handleCheckboxClicked}></lightning-input> -->
+                                        <lightning-input type="checkbox" name={file.contentId} checked={file.isChecked} onchange={handleCheckboxClicked}></lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item>
+                                        <img src={file.thumbnail} alt="thumbnail" class="thumbnailImg" />
+                                    </lightning-layout-item>
+                                    <lightning-layout-item padding="around-small">
+                                        <p>{file.title}</p>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template if:false={isFileListShown}>
+                    <p>You don't have any files here. Try a different filter, or upload a file.</p>
+                </template>
+            </div>
+        </div>
+    </lightning-quick-action-panel>
+</template>

@@ -1,0 +1,22 @@
+<aura:component controller="TaskListView_Ctrl" implements="force:appHostable">
+    <aura:attribute name="selectedListView" type="String"></aura:attribute>
+    <aura:attribute name="listViews" type="List" default="[]"></aura:attribute>
+    <aura:attribute name="otherList" type="List" default="[]"></aura:attribute>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+
+    <lightning:select name="select" label="Select List View" onchange="{!c.handleListViewChanged}">
+        <aura:iteration items="{!v.otherList}" var="listView">
+            <option value="{!listView.devName}">{!listView.name}</option>
+        </aura:iteration>
+    </lightning:select>
+
+    <lightning:listView aura:id="listViewAccounts"
+        objectApiName="Task"
+        listName="{!v.selectedListView}"
+        rows="5"
+        showSearchBar="true"
+        showActionBar="false"
+        enableInlineEdit="true"
+        showRowLevelActions="false"
+    />
+</aura:component>

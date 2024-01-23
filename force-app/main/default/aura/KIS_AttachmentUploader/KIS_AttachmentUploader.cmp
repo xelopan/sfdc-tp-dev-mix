@@ -1,0 +1,19 @@
+<!-- AttachmentUploader-->
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="accept" type="List" default="['.jpg', '.jpeg', '.pdf', '.zip', '.png']"/>
+    <aura:attribute name="multiple" type="Boolean" default="true"/>
+    <aura:attribute name="disabled" type="Boolean" default="false"/>
+    
+    <aura:registerEvent name="AttachmentUploaderEvent" type="c:KIS_AttachmentUploaderEvent"/>
+    <aura:registerEvent name="updateAttachmentsAppEvent" type="c:KIS_UpdateAttachmentsAppEvent"/>
+    
+    <lightning:fileUpload
+                          multiple="{!v.multiple}" 
+                          accept="{!v.accept}" 
+                          recordId="{!v.recordId}" 
+                          onuploadfinished="{!c.handleUploadFinished}" />
+    
+    
+</aura:component>

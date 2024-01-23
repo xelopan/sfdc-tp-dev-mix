@@ -1,0 +1,121 @@
+<!-- NotifyModal -->
+<aura:component controller="KIS_NotifyController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+    
+    
+    
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="open" type="Boolean" default="false"/>
+    <aura:attribute name="ownerId" type="Map[]"/>
+    <aura:attribute name="selected" type="Map[]"/>
+    <aura:attribute name="fvalues" type="Map[]"/>
+    <aura:attribute name="cCUser" type="Map[]"/>
+    <aura:attribute name="cCContact" type="Map[]"/>
+    <aura:attribute name="toUser" type="Map[]"/>
+    <aura:attribute name="toContact" type="Map[]"/>
+    <aura:attribute name="subject" type="String"/>
+    <aura:attribute name="body" type="String"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+ 
+    
+    <!-- Handling to get Final values of lookups -->
+    <aura:handler name="CustomLookUpFinalValueEvent" event="c:KIS_CustomLookupFinalValueEvent" action="{!c.finalValueAction}"/>
+    <!-- handling onselect values while attaching docs -->
+    <aura:handler name="selectedAttachmentsNotifyEvent" event="c:KIS_selectedAttachmentsNotifyEvent" action="{!c.selectedAction}"/>
+    
+    <header class="slds-modal__header slds-p-bottom_large">
+        
+        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Notify</h2>
+    </header>
+    
+    
+    <div class="slds-grid slds-gutters slds-p-bottom_large slds-p-top_large"> 
+        <div class="slds-col slds-size_2-of-12">
+            <div class="slds-text-heading_small">To:</div>
+        </div>
+        <div aura:id="toContact" class="slds-col slds-size_5-of-12">
+            <c:KIS_CustomLookupComp uniqueName="toContact"
+                                iconName="standard:contact"
+                                methodName="c.getContacts"
+                                singleSelect="false"
+                                sObject="Contact"
+                                />   
+        </div>
+        <div class="slds-col slds-size_5-of-12">
+            <c:KIS_CustomLookupComp uniqueName="toUser"
+                                iconName="standard:user"
+                                methodName="c.getUsers"
+                                singleSelect="false"
+                                sObject="User"
+                                />   
+        </div>
+    </div>
+    <div class="slds-grid slds-gutters"> 
+        <div class="slds-col slds-size_2-of-12">
+            <div class="slds-text-heading_small">cC:</div>
+        </div>
+        <div class="slds-col slds-size_5-of-12">
+            <c:KIS_CustomLookupComp uniqueName="cCContact"
+                                iconName="standard:contact"
+                                methodName="c.getContacts"
+                                singleSelect="false"
+                                sObject="Contact"
+                                />   
+        </div>
+        <div class="slds-col slds-size_5-of-12">
+            <c:KIS_CustomLookupComp aura:id="Record"
+                                uniqueName="cCUser"
+                                iconName="standard:user"
+                                methodName="c.getUsers"
+                                singleSelect="false"
+                                sObject="User"
+                                selected="{!v.ownerId}"
+                                />   
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-gutters slds-p-top_large slds-p-bottom_large"> 
+        <div class="slds-col slds-size_2-of-12">
+            <div class="slds-text-heading_small">Subject:</div>
+        </div>
+        <div class="slds-col slds-size_10-of-12">
+            <lightning:input variant="label-hidden" value="{!v.subject}" placeholder="Subject"/>
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-gutters slds-p-top_large"> 
+        <div class="slds-col slds-size_2-of-12">
+            <div class="slds-text-heading_small">Message:</div>
+        </div>
+        <div class="slds-col slds-size_10-of-12">
+            <lightning:inputRichText value="{!v.body}" placeholder="Email body...."/>
+        </div>
+    </div>
+    
+    <div class="slds-p-left_medium">
+        <aura:iteration items="{!v.selected}" var="l">
+            <li class="slds-listbox-item slds-truncate" role="presentation"> 
+                <aura:if isTrue="{! v.selected}">
+                    <lightning:pill class="" label="{!l.Title}" name="{!l}" onremove="{! c.handleRemoveOnly }" href="{!'/'+(l.Id)}"/>
+                    
+                </aura:if>
+            </li>
+        </aura:iteration>
+    </div>
+    
+
+    
+    <div class="slds-button-group slds-m-top_large slds-p-right_medium slds-float_right" style="margin-top: 2rem;" role="group">
+		<lightning:button class="slds-m-top_medium slds-float_right" label="Attach" onclick="{!c.toOpenAttachments}"/>
+        <lightning:button class="slds-m-top_medium slds-float_right" variant="brand" label="Notify" onclick="{!c.sendMail}"/>
+    </div>
+    
+    <div class="slds-button slds-m-top_medium slds-float_right">
+        <c:KIS_AttachmentUploader recordId="{!v.recordId}"/>
+    </div>
+    
+    
+    <c:KIS_selectAttachments isOpen="{!v.open}" recordId="{!v.recordId}"/> 
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    
+</aura:component>

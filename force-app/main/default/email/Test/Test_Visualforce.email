@@ -1,0 +1,25 @@
+<messaging:emailTemplate 
+    subject="Test Visualforce" 
+    recipientType="Contact" 
+    relatedToType="Task">
+<messaging:plainTextEmailBody>
+Congratulations!
+This is your new Visualforce Email Template.
+</messaging:plainTextEmailBody>
+<messaging:htmlEmailBody>
+    <h3>Test Visualforce</h3>
+    <ul>
+        <li>Client/Prospect: {!relatedTo.What.Name}</li>
+        <li>Date: {!TEXT(relatedTo.ActivityDate)}</li>
+        <li>Activity Type: {!relatedTo.Type}</li>
+        <li class="attendee-list">Participants: 
+            <c:WhoRelationList recordId="{!relatedTo.Id}"></c:WhoRelationList>
+        </li>
+        <li>Product of Interest: [Product]</li>
+        <li>Opportunity: [opportunity]</li>
+        <li>Executive Summary: [Executive Summary]</li>
+        <li>Comments: [Description]</li>
+        <li>Next Step: [Next Steps]</li>
+    </ul>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

@@ -1,0 +1,27 @@
+<apex:component controller="ApplicationApprovalRequest_Ctrl" access="global">
+    <apex:attribute name="recId" type="Id" assignTo="{!cRecId}" description="supplied record id" />
+
+    <p>Dear Approver,</p>
+
+    <p>You are receiving this email as Application Admin has submitted an approval request in Salesforce.</p>
+
+    <apex:outputPanel rendered="{!!ISBLANK(cRecord.Approver_Comments__c)}">
+        <p>Below is the comments from previous approvers.</p>
+        <apex:outputField value="{!cRecord.Approver_Comments__c}"></apex:outputField>
+    </apex:outputPanel>
+    
+    <!-- <apex:outputPanel rendered="{!isFinalApprover}">
+        <p>To approve or reject this item, reply to this email with one of these words in the first line of the email message: APPROVE, APPROVED, YES, REJECT, REJECTED, NO</p>
+        <p>When replying, you can also add comments on the second line. Comments will be stored with the approval request in Salesforce CRM.</p>
+    </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!!isFinalApprover}">
+        <p>To approve or reject this item, click this link <a href="{!urlStr}">{!urlStr}</a></p>
+    </apex:outputPanel> -->
+
+    <p>To approve or reject this item, click this link <a href="{!urlStr}">{!urlStr}</a></p>
+    <p>You can also approve or reject by replying this email with one of these words in the first line of the email message: APPROVE, APPROVED, YES, REJECT, REJECTED, NO</p>
+    <p>When replying, you can also add comments on the second line. Comments will be stored with the approval request in Salesforce CRM.</p>
+    
+    <p>Thank you,<br/>Salesforce</p>
+</apex:component>

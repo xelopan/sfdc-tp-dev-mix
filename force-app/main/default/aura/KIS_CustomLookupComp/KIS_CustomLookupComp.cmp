@@ -1,0 +1,128 @@
+<!-- CustomLookUpComp -->
+<aura:component controller="KIS_ContactController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <!-- Main attributes Start -->
+    <aura:attribute name="uniqueName" type="String" required="true" default="lookup1"/><!--If not entered it takes default value-->
+    <aura:attribute name="iconName" type="String" default="standard:contact" required="true"/>
+    <aura:attribute name="methodName" type="String" default="c.getContacts" required="true"/>
+    <aura:attribute name="singleSelect" type="Boolean" default="true"/>
+    <aura:attribute name="sObject" type="String" default="Contact" required="true" access="global" />
+    <aura:attribute name="selected" type="Map[]"/><!--Optional If you want any pre-population can use this to pass that record value-->
+    <!-- Main attributes End -->
+    
+    <aura:attribute name="sTerm" type="string" default=""/>
+    <aura:attribute name="conList" type="Map[]"/>
+    <aura:attribute name="blurTimeout" type="Integer"/>
+    
+    <!-- Register Final value Event -->
+    <aura:registerEvent name="CustomLookUpFinalValueEvent" type="c:KIS_CustomLookupFinalValueEvent"/>
+    
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="LookupEventToParent" event="c:KIS_LookupEventToParent" action="{!c.handleEvent}"/>
+    
+    <!-- Method to send pre-populate lookUp value to the requested component: parent to lookup-->
+    <aura:method name="prePopulateMethod" action="{!c.render}">
+        <aura:attribute name="populatedRecord" type="Map[]"/>
+    </aura:method>
+    
+    <aura:if isTrue="{!v.singleSelect}">
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <div class="slds-combobox_container slds-has-selection">
+                    <div aura:id="toOpen" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                        <div class=" slds-input-has-icon slds-input-has-icon_right" role="none">
+                            
+                            <div>
+                                <div aura:id="input" class="slds-p-top_none" >
+                                    <lightning:input class="slds-p-top_none" variant="label-hidden" name="Search" value="{!v.sTerm}" onblur="{!c.onblur}" onclick="{!c.onfocus}" onchange="{!c.onchange}" placeholder="{!'Select ' + (v.sObject)}"/>
+                                    
+                                    <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right ">
+                                        <span class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                                            <lightning:icon class="" iconName="utility:search" size="x-small" alternativeText="Search" />
+                                        </span>
+                                    </span>
+                                </div>
+                                <aura:if isTrue="{!v.selected}">
+                                    <div aura:id="lookup-pill" class="slds-pill-container slds-hide">
+                                        <aura:iteration items="{!v.selected}" var="l">
+                                            <lightning:pill class="pillSize" label="{!l.Name}" name="{!l}" onremove="{! c.handleRemoveOnly }" href="{!'/'+(l.Id)}">
+                                                <aura:set attribute="media">
+                                                <lightning:icon iconName="{!v.iconName}"  alternativeText="{!v.iconName}"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </aura:iteration>
+                                    </div>
+                                </aura:if>
+                            </div>
+                            
+                        </div>
+                        <div onfocus="{!c.onfocus}" id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid" role="listbox">
+                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                <aura:iteration items="{!v.conList}" var="listItem">
+                                    <span ><c:KIS_childLookup myContact="{!listItem}" icon="{!v.iconName}" object="{!v.sObject}"/></span>
+                                </aura:iteration>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Multi Select Start-->
+        <aura:set attribute="else">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <div class="slds-combobox_container slds-has-selection">
+                        <div aura:id="toOpen" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                            <div class=" slds-input-has-icon slds-input-has-icon_right" role="none">
+                                
+                                <div>
+                                    
+                                    <lightning:input class="slds-p-top_none" variant="label-hidden" name="Search" value="{!v.sTerm}" onblur="{!c.onblur}" onclick="{!c.onfocus}" onchange="{!c.onchange}" placeholder="{!'Select ' + (v.sObject)}"/>
+                                    
+                                    <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+                                        <span class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                                            <lightning:icon iconName="utility:search" size="x-small" alternativeText="Search" />
+                                        </span>
+                                    </span>     
+                                    
+                                </div>
+                                
+                            </div>
+                            <div onfocus="{!c.onfocus}" id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid" role="listbox">
+                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                    
+                                    <aura:iteration items="{!v.conList}" var="listItem">
+                                        <span ><c:KIS_childLookup myContact="{!listItem}" icon="{!v.iconName}" object="{!v.sObject}"/></span>
+                                    </aura:iteration>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--div class="slds-listbox_selection-group slds-listbox-toggle"-->
+                    
+                    <ul class="slds-listbox slds-listbox_horizontal" role="listbox" aria-label="Selected Options:" aria-orientation="horizontal">
+                        <aura:iteration items="{!v.selected}" var="l">
+                            <li class="slds-listbox-item slds-truncate" role="presentation"> 
+                                <aura:if isTrue="{! v.selected}">
+                                    <lightning:pill class="" label="{!l.Name}" name="{!l}" onremove="{! c.handleRemoveOnly }" href="{!'/'+(l.Id)}">
+                                        <aura:set attribute="media">
+                                        <lightning:icon iconName="{!v.iconName}" alternativeText="{!v.iconName}"/>
+                                        </aura:set>
+                                    </lightning:pill>
+                                </aura:if>
+                            </li>
+                        </aura:iteration>
+                    </ul>
+                   
+                <!--/div-->
+            </div>
+        </aura:set> 
+        <!-- Multi Select End-->
+    </aura:if>
+</aura:component>

@@ -1,0 +1,50 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <template if:true={isMainFormShown}>
+        <lightning-quick-action-panel header="Send Email">
+            <c-email-address-input-multi get-contact get-user id="toAddress" label="To" onaddresseschanged={handleToAddressesChanged}></c-email-address-input-multi>
+            <c-email-address-input-multi get-contact get-user id="ccAddress" label="Cc" onaddresseschanged={handleCcAddressesChanged}></c-email-address-input-multi>
+            <c-email-address-input-multi get-contact get-user id="bccAddress" label="Bcc" onaddresseschanged={handleBccAddressesChanged}></c-email-address-input-multi>
+            <c-email-template-selector default-folder="Test" ontemplateselected={handleTemplateSelected}></c-email-template-selector>
+            <lightning-input class="slds-p-top_small" type="text" label="Subject" value={emailSubject} 
+                    onchange={handleEmailSubjectChanged}></lightning-input>
+            <lightning-input-rich-text class="slds-p-top_medium" label="Body" value={emailBody} 
+                    onchange={handleEmailBodyChanged}></lightning-input-rich-text>
+
+            <lightning-button-group class="slds-p-top_medium">
+                <lightning-button-icon data-id="attachmentButton" icon-name="utility:attach" tooltip="Attach File" 
+                        onclick={handleAttachmentButtonClicked} disabled={areButtonsDisabled}></lightning-button-icon>
+                <!-- <lightning-button-icon data-id="templateButton" icon-name="utility:text_template" tooltip="Select Template"
+                        onclick={handleTemplateButtonClicked} disabled={areButtonsDisabled}></lightning-button-icon> -->
+                <lightning-button-icon data-id="previewButton" icon-name="utility:preview" tooltip="Preview Email"
+                        onclick={handlePreviewButtonClicked} disabled={areButtonsDisabled}></lightning-button-icon>
+            </lightning-button-group>
+
+            <template if:true={isFileListShown}>
+                <ul>
+                    <template for:each={selectedFiles} for:item="file">
+                        <li key={file.documentId}>
+                            {file.name}
+                        </li>
+                    </template>
+                </ul>
+            </template>
+
+            <div slot="footer">
+                <div class="slds-float_right">
+                    <lightning-button label="Cancel" onclick={handleCancelkButtonClicked}></lightning-button>
+                    <lightning-button label="Send" variant="brand" class="slds-m-left_small" onclick={handleSendButonClicked}></lightning-button>
+                </div>
+            </div>
+        </lightning-quick-action-panel>
+    </template>
+
+    <template if:true={isAttachmentFormShown}>
+        <c-file-selector record-id={recordId} onfileselected={handleFileSelected}></c-file-selector>
+    </template>
+
+    <!-- <template if:true={isTemplateFormShown}>
+        <c-email-template-selector default-folder="Test"></c-email-template-selector>
+    </template> -->
+    <template if:true={isPreviewShown}></template>
+</template>
